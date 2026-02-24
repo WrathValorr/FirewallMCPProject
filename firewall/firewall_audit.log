@@ -1,0 +1,22 @@
+2026-02-24 16:05:52,224 - INFO - Processing request of type ListToolsRequest
+2026-02-24 16:05:52,226 - INFO - Processing request of type ListPromptsRequest
+2026-02-24 16:05:52,226 - INFO - Processing request of type ListResourcesRequest
+2026-02-24 16:05:55,942 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:06:17,813 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:06:17,815 - INFO - Action: BLOCK_IP | IP: 192.0.12122.4556.7 | Success: False | User: system
+2026-02-24 16:07:45,055 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:07:59,218 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:08:00,689 - INFO - Action: BLOCK_IP | IP: 192.0.2.1 | Success: True | User: system
+2026-02-24 16:08:12,666 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:08:54,882 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:08:56,153 - INFO - Action: BLOCK_IP | IP: 192.0.3.1 | Success: True | User: system
+2026-02-24 16:09:03,873 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:16:22,921 - INFO - Processing request of type ListToolsRequest
+2026-02-24 16:16:22,924 - INFO - Processing request of type ListPromptsRequest
+2026-02-24 16:16:22,925 - INFO - Processing request of type ListResourcesRequest
+2026-02-24 16:17:36,038 - INFO - Processing request of type CallToolRequest
+2026-02-24 16:17:37,802 - INFO - Action: REMOVE_ALL | IP: ALL_RULES | Success: True | User: system
+2026-02-24 16:17:42,478 - INFO - Processing request of type CallToolRequest
+2026-02-24 21:53:04,770 - INFO - Processing request of type ListToolsRequest
+2026-02-24 21:53:04,772 - INFO - Processing request of type ListPromptsRequest
+2026-02-24 21:53:04,773 - INFO - Processing request of type ListResourcesRequest
