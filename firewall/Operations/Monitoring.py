@@ -23,7 +23,6 @@ def check_ip_block(ip_address: str) -> str:
         return f"IP {ip_address} is NOT blocked (no MCP rule found)"
 
 def list_blocked_ips() -> str:
-    print("hi")
     command = [
         "powershell", "-NoProfile", "-Command",
         "Get-NetFirewallRule -DisplayName 'MCP_Block_*' -ErrorAction SilentlyContinue | "
