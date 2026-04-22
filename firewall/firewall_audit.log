@@ -449,3 +449,45 @@
 2026-04-22 20:23:26,332 - INFO - Processing request of type ListPromptsRequest
 2026-04-22 20:23:26,334 - INFO - Processing request of type ListResourcesRequest
 2026-04-22 20:24:47,884 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:13:34,831 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:13:34,852 - INFO - Action: BLOCK_IP | IP: 3.8.109.248 | Success: False | User: system
+2026-04-22 21:14:00,684 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:14:00,685 - INFO - Processing request of type ListPromptsRequest
+2026-04-22 21:14:00,687 - INFO - Processing request of type ListResourcesRequest
+2026-04-22 21:14:07,118 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:14:10,510 - INFO - Action: BLOCK_IP | IP: 3.8.109.248 | Success: True | User: system
+2026-04-22 21:14:13,599 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:14:16,156 - INFO - Action: BLOCK_IP | IP: 35.177.28.138 | Success: True | User: system
+2026-04-22 21:14:42,620 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:14:44,242 - INFO - Action: UNBLOCK_IP | IP: 3.8.109.248 | Success: True | User: system
+2026-04-22 21:18:25,488 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:18:26,939 - INFO - Action: UNBLOCK_IP | IP: 35.177.28.138 | Success: True | User: system
+2026-04-22 21:19:06,606 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:19:08,875 - INFO - Action: BLOCK_IP | IP: 172.66.147.243 | Success: True | User: system
+2026-04-22 21:19:10,584 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:19:12,912 - INFO - Action: BLOCK_IP | IP: 104.20.23.154 | Success: True | User: system
+2026-04-22 21:19:58,846 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:22:57,607 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:22:57,610 - INFO - Processing request of type ListPromptsRequest
+2026-04-22 21:22:57,612 - INFO - Processing request of type ListResourcesRequest
+2026-04-22 21:24:02,783 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:24:05,090 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:24:07,424 - INFO - Action: BLOCK_IP | IP: 104.20.23.154 | Success: True | User: system
+2026-04-22 21:24:09,529 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:24:11,267 - INFO - Action: BLOCK_IP | IP: 172.66.147.243 | Success: True | User: system
+2026-04-22 21:24:13,787 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:24:16,377 - INFO - Action: BLOCK_IP | IP: 2606:4700:10::6814:179a | Success: True | User: system
+2026-04-22 21:24:19,039 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:24:21,794 - INFO - Action: BLOCK_IP | IP: 2606:4700:10::ac42:93f3 | Success: True | User: system
+2026-04-22 21:25:28,030 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:25:30,466 - INFO - Action: BLOCK_IP | IP: 108.156.107.39 | Success: True | User: system
+2026-04-22 21:25:38,068 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:25:40,449 - INFO - Action: BLOCK_IP | IP: 108.156.107.110 | Success: True | User: system
+2026-04-22 21:25:44,017 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:25:46,399 - INFO - Action: BLOCK_IP | IP: 108.156.107.115 | Success: True | User: system
+2026-04-22 21:25:49,888 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:25:52,328 - INFO - Action: BLOCK_IP | IP: 108.156.107.129 | Success: True | User: system
+2026-04-22 21:26:59,152 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:27:57,761 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:27:59,013 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:28:00,042 - INFO - Processing request of type ListToolsRequest

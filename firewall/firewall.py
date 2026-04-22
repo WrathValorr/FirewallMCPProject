@@ -5,6 +5,7 @@ from Operations.Management import (
     block_ip_port as block_ip_port_logic,
     block_multiple_ips as block_multiple_ips_logic,
     remove_all_blocks as remove_all_blocks_logic,
+    block_website_ips as block_website_ips_logic,
 )
 from Operations.Monitoring import (
     check_ip_block as check_ip_block_logic,
@@ -24,9 +25,10 @@ def check_admin() -> str:
 
 # Blocking Tools
 @mcp.tool()
-def block_ip(ip_address: str) -> str:
-    """Creates a Windows Defender Firewall rule to block an IP."""
-    return block_ip_logic(ip_address)
+def block_ip(ip_address: str, direction: str = "Inbound") -> str:
+    """Creates a Windows Defender Firewall rule to block an IP.
+    direction: 'Inbound' (default), 'Outbound', or 'Both'."""
+    return block_ip_logic(ip_address, direction)
 
 @mcp.tool()
 def remove_ip_block(ip_address: str) -> str:
@@ -39,9 +41,17 @@ def block_ip_port(ip_address: str, port: int, protocol: str = "TCP") -> str:
     return block_ip_port_logic(ip_address, port, protocol)
 
 @mcp.tool()
-def block_multiple_ips(ip_list: str, confirmation: str) -> str:
-    """Block multiple IPs at once (comma-separated). Requires confirmation='CONFIRM_DELETE_ALL"""
-    return block_multiple_ips_logic(ip_list, confirmation)
+def block_multiple_ips(ip_list: str, confirmation: str, direction: str = "Inbound") -> str:
+    """Block multiple IPs at once (comma-separated). Requires confirmation='CONFIRM_BLOCK_MANY'.
+    direction: 'Inbound' (default), 'Outbound', or 'Both'."""
+    return block_multiple_ips_logic(ip_list, confirmation, direction)
+
+@mcp.tool()
+def block_website_ips(domain: str, direction: str = "Outbound") -> str:
+    """Resolve a domain and block its IPv4 addresses.
+    direction: 'Outbound' (default - stops you reaching the site),
+    'Inbound', or 'Both'."""
+    return block_website_ips_logic(domain, direction)
 
 @mcp.tool()
 def remove_all_blocks(confirmation: str) -> str:

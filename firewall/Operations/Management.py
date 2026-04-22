@@ -1,7 +1,30 @@
 import subprocess
 from .Utility import audit_log, validate_ip, rule_exists, is_admin, ps_quote
 
-def block_ip(ip_address: str) -> str:
+def _create_block_rule(rule_name: str, ip_address: str, direction: str) -> tuple[bool, str]:
+    # Small helper that actually runs PowerShell to make one rule.
+    # Returns (success, message) so the caller can track each rule separately.
+    # Skip if this exact rule name already exists.
+    if rule_exists(rule_name):
+        return True, f"Already exists: {rule_name}"
+
+    # Build the PowerShell command for a single direction.
+    command = [
+        "powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command",
+        f"New-NetFirewallRule -DisplayName '{ps_quote(rule_name)}' -Direction {direction} -Action Block -RemoteAddress {ip_address} -ErrorAction Stop"
+    ]
+
+    try:
+        subprocess.run(command, capture_output=True, text=True, check=True)
+        return True, f"Created: {rule_name}"
+    except subprocess.CalledProcessError as e:
+        stderr = (e.stderr or "").strip()
+        if "Access is denied" in stderr or "UnauthorizedAccessException" in stderr:
+            return False, "Access Denied. Please run as Administrator."
+        return False, f"Failed: {stderr}"
+
+
+def block_ip(ip_address: str, direction: str = "Inbound") -> str:
     # First check we are running as admin. You can't change the firewall without it.
     if not is_admin():
         audit_log("BLOCK_IP", ip_address, False)
@@ -13,36 +36,36 @@ def block_ip(ip_address: str) -> str:
         audit_log("BLOCK_IP", ip_address, False)
         return msg
 
-    # Build a rule name. All our rules start with MCP_Block_ so we can find them later.
-    rule_name = f"MCP_Block_{ip_address}"
-    # If this IP is already blocked, don't make a duplicate rule.
-    if rule_exists(rule_name):
-        audit_log("BLOCK_IP", ip_address, True)
-        return f"Already blocked: {rule_name}"
+    # Clean up the direction input. Accept any casing like "inbound", "OUTBOUND".
+    direction = direction.strip().capitalize()
+    if direction not in ("Inbound", "Outbound", "Both"):
+        return "ERROR: direction must be 'Inbound', 'Outbound', or 'Both'."
 
-    # Build the PowerShell command that creates a new firewall rule.
-    # Direction Inbound = traffic coming in. Action Block = drop it.
-    command = [
-        "powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command",
-        f"New-NetFirewallRule -DisplayName '{ps_quote(rule_name)}' -Direction Inbound -Action Block -RemoteAddress {ip_address} -ErrorAction Stop"
-    ]
+    # Work out which rules we need to make.
+    # Inbound keeps the old name MCP_Block_<ip> so existing tools keep working.
+    # Outbound gets an _Out suffix so it doesn't clash with the inbound rule.
+    rules_to_make = []
+    if direction in ("Inbound", "Both"):
+        rules_to_make.append(("Inbound", f"MCP_Block_{ip_address}"))
+    if direction in ("Outbound", "Both"):
+        rules_to_make.append(("Outbound", f"MCP_Block_{ip_address}_Out"))
 
+    # Try to make each rule and collect results.
+    messages, any_fail = [], False
+    for dir_name, rule_name in rules_to_make:
+        ok_rule, msg_rule = _create_block_rule(rule_name, ip_address, dir_name)
+        if not ok_rule:
+            any_fail = True
+        messages.append(f"[{dir_name}] {msg_rule}")
 
-    try:
-        # Run the command. check=True means it will error if PowerShell fails.
-        subprocess.run(command, capture_output=True, text=True, check=True)
-        audit_log("BLOCK_IP", ip_address, True)
-        return f"Successfully created Windows Firewall rule: {rule_name}"
-    except subprocess.CalledProcessError as e:
-        # Something went wrong. Grab the error message from PowerShell.
-        stderr = (e.stderr or "").strip()
-        audit_log("BLOCK_IP", ip_address, False)
-        # Handle the most common problem: not being admin.
-        if "Access is denied" in stderr or "UnauthorizedAccessException" in stderr:
-            return "ERROR: Access Denied. Please run as Administrator."
-        return f"Failed to add rule: {stderr}"
+    # Log once per call, marking success only if every rule succeeded.
+    audit_log("BLOCK_IP", f"{ip_address} ({direction})", not any_fail)
 
-def block_multiple_ips(ip_list: str, confirmation: str) -> str:
+    # Give back a combined report. If only one rule was asked for, the report is still clear.
+    header = f"Block {ip_address} ({direction}):"
+    return header + "\n" + "\n".join(messages)
+
+def block_multiple_ips(ip_list: str, confirmation: str, direction: str = "Inbound") -> str:
     # This can block lots of IPs at once, so we make the user confirm first.
     if confirmation != "CONFIRM_BLOCK_MANY":
         return f"ERROR: Must provide confirmation=CONFIRM_BLOCK_MANY to proceed"
@@ -63,17 +86,71 @@ def block_multiple_ips(ip_list: str, confirmation: str) -> str:
     # Keep score of how many worked and how many failed.
     results, success_count, fail_count = [], 0, 0
     for ip in ips:
-        # Re-use the single-IP block function for each one.
-        result = block_ip(ip)
-        if result.startswith("Successfully") or result.startswith("Already blocked"):
-            success_count += 1
-        else:
+        # Re-use the single-IP block function for each one. Pass direction through.
+        result = block_ip(ip, direction)
+        # The new block_ip returns a multi-line report. "Failed" or "Denied" means trouble.
+        if "Failed:" in result or "Access Denied" in result or result.startswith("ERROR"):
             fail_count += 1
+        else:
+            success_count += 1
         results.append(f"{ip}: {result}")
 
     # Build a summary at the top and the full list below it.
     summary = f"\n--- Summary ---\nSuccess: {success_count} | Failed: {fail_count}\n\n"
     return summary + "\n".join(results)
+
+import socket
+
+def block_website_ips(domain: str, direction: str = "Outbound") -> str:
+    # Admin check first. No firewall edits without admin.
+    if not is_admin():
+        audit_log("BLOCK_WEB_IPS", domain, False)
+        return "ERROR: Admin privileges required. Run as Administrator."
+
+    # Clean up the input. Strip spaces and any http(s):// prefix the user might paste.
+    domain = domain.strip().lower()
+    for prefix in ("https://", "http://"):
+        if domain.startswith(prefix):
+            domain = domain[len(prefix):]
+    # Drop anything after the first slash (e.g. /path) so we only have the host.
+    domain = domain.split("/")[0]
+
+    if not domain:
+        return "ERROR: No domain provided."
+
+    # Ask the OS to resolve the domain to every IP it knows about.
+    try:
+        results = socket.getaddrinfo(domain, None)
+    except socket.gaierror as e:
+        audit_log("BLOCK_WEB_IPS", domain, False)
+        return f"ERROR: Could not resolve '{domain}': {e}"
+
+    # Pull just the IPv4 addresses. Use a set so duplicates drop out.
+    # (IPv6 left out because Windows firewall syntax differs and most sites still use IPv4.)
+    ips = sorted({sockaddr[0] for family, _, _, _, sockaddr in results
+                  if family == socket.AF_INET})
+
+    if not ips:
+        return f"ERROR: No IPv4 addresses found for {domain}."
+
+    # Block each IP one at a time. Pass direction through so the caller can
+    # pick Inbound / Outbound / Both. Outbound is the default for websites
+    # because that's what stops YOU reaching the server.
+    results_out, ok, fail = [], 0, 0
+    for ip in ips:
+        r = block_ip(ip, direction)
+        if "Failed:" in r or "Access Denied" in r or r.startswith("ERROR"):
+            fail += 1
+        else:
+            ok += 1
+        results_out.append(f"{ip}: {r}")
+
+    audit_log("BLOCK_WEB_IPS", f"{domain} ({len(ips)} IPs)", fail == 0)
+
+    # Build the report.
+    summary = (f"\n--- Blocked IPs for {domain} ---\n"
+               f"Resolved {len(ips)} IP(s) | Success: {ok} | Failed: {fail}\n\n")
+    return summary + "\n".join(results_out)
 
 def block_ip_port(ip_address: str, port: int, protocol: str = "TCP") -> str:
     # Admin check first.
