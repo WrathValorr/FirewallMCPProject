@@ -79,9 +79,9 @@ def block_multiple_ips(ip_list: str, confirmation: str, direction: str = "Inboun
     ips = sorted({ip.strip() for ip in ip_list.split(",") if ip.strip()})
     if not ips:
         return "ERROR: No IPs provided."
-    # Cap at 200 so people can't lock up the system with a huge list.
-    if len(ips) > 200:
-        return "ERROR: Too many IPs (max 200 per request)."
+    # Cap at 10 so people can't lock up the system with a huge list.
+    if len(ips) > 10:
+        return "ERROR: Too many IPs (max 10 per request)."
 
     # Keep score of how many worked and how many failed.
     results, success_count, fail_count = [], 0, 0
