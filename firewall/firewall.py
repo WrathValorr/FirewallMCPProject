@@ -11,6 +11,10 @@ from Operations.Monitoring import (
     check_ip_block as check_ip_block_logic,
     list_blocked_ips as list_blocked_ips_logic,
     get_rule_details as get_rule_details_logic,
+    show_active_connections as show_active_connections_logic,
+    detect_connection_flood as detect_connection_flood_logic,
+    analyze_remote_ips as analyze_remote_ips_logic,
+    show_listening_ports as show_listening_ports_logic,
 )
 from Operations.Utility import check_admin_privileges
 from Operations.Utility import view_audit_log as view_audit_log_logic
@@ -78,6 +82,29 @@ def get_rule_details(ip_address: str) -> str:
 def view_audit_log(lines: int = 20) -> str:
     """View the last N lines of the audit log"""
     return view_audit_log_logic(lines)
+
+@mcp.tool()
+def show_active_connections(protocol: str = "TCP", state: str = "ESTABLISHED") -> str:
+    """Show active network connections. Useful for spotting unusual traffic.
+    protocol: 'TCP' (default) or 'UDP'.
+    state: 'ESTABLISHED' (default), 'LISTEN', 'TIME_WAIT', etc."""
+    return show_active_connections_logic(protocol, state)
+
+@mcp.tool()
+def detect_connection_flood(threshold: int = 10) -> str:
+    """Detect potential DDoS by finding remote IPs with excessive connections.
+    threshold: Minimum connection count to flag an IP (default: 10)."""
+    return detect_connection_flood_logic(threshold)
+
+@mcp.tool()
+def analyze_remote_ips() -> str:
+    """List every unique remote IP connected to the system, sorted by connection count."""
+    return analyze_remote_ips_logic()
+
+@mcp.tool()
+def show_listening_ports() -> str:
+    """Show all ports currently in LISTEN state along with the owning process."""
+    return show_listening_ports_logic()
 
 # Main
 if __name__ == "__main__":

@@ -1,8 +1,9 @@
 import subprocess
+import socket
+
 from .Utility import audit_log, validate_ip, rule_exists, is_admin, ps_quote
 
 def _create_block_rule(rule_name: str, ip_address: str, direction: str) -> tuple[bool, str]:
-    # Small helper that actually runs PowerShell to make one rule.
     # Returns (success, message) so the caller can track each rule separately.
     # Skip if this exact rule name already exists.
     if rule_exists(rule_name):
@@ -66,40 +67,31 @@ def block_ip(ip_address: str, direction: str = "Inbound") -> str:
     return header + "\n" + "\n".join(messages)
 
 def block_multiple_ips(ip_list: str, confirmation: str, direction: str = "Inbound") -> str:
-    # This can block lots of IPs at once, so we make the user confirm first.
     if confirmation != "CONFIRM_BLOCK_MANY":
         return f"ERROR: Must provide confirmation=CONFIRM_BLOCK_MANY to proceed"
 
-    # Must be admin to change the firewall.
     if not is_admin():
         audit_log("BLOCK_MANY", "BATCH", False)
         return "ERROR: Admin privileges required. Run as Administrator."
 
-    # Split the comma list into a set of IPs. Set removes duplicates. Sorted makes output tidy.
     ips = sorted({ip.strip() for ip in ip_list.split(",") if ip.strip()})
     if not ips:
         return "ERROR: No IPs provided."
-    # Cap at 200 so people can't lock up the system with a huge list.
-    if len(ips) > 200:
-        return "ERROR: Too many IPs (max 200 per request)."
+    if len(ips) > 10:
+        return "ERROR: Too many IPs (max 10 per request)."
 
-    # Keep score of how many worked and how many failed.
     results, success_count, fail_count = [], 0, 0
     for ip in ips:
-        # Re-use the single-IP block function for each one. Pass direction through.
         result = block_ip(ip, direction)
-        # The new block_ip returns a multi-line report. "Failed" or "Denied" means trouble.
         if "Failed:" in result or "Access Denied" in result or result.startswith("ERROR"):
             fail_count += 1
         else:
             success_count += 1
         results.append(f"{ip}: {result}")
 
-    # Build a summary at the top and the full list below it.
     summary = f"\n--- Summary ---\nSuccess: {success_count} | Failed: {fail_count}\n\n"
     return summary + "\n".join(results)
 
-import socket
 
 def block_website_ips(domain: str, direction: str = "Outbound") -> str:
     # Admin check first. No firewall edits without admin.
@@ -112,7 +104,7 @@ def block_website_ips(domain: str, direction: str = "Outbound") -> str:
     for prefix in ("https://", "http://"):
         if domain.startswith(prefix):
             domain = domain[len(prefix):]
-    # Drop anything after the first slash (e.g. /path) so we only have the host.
+    # Drop anything after the first slash  so we only have the host.
     domain = domain.split("/")[0]
 
     if not domain:
@@ -126,16 +118,13 @@ def block_website_ips(domain: str, direction: str = "Outbound") -> str:
         return f"ERROR: Could not resolve '{domain}': {e}"
 
     # Pull just the IPv4 addresses. Use a set so duplicates drop out.
-    # (IPv6 left out because Windows firewall syntax differs and most sites still use IPv4.)
     ips = sorted({sockaddr[0] for family, _, _, _, sockaddr in results
                   if family == socket.AF_INET})
 
     if not ips:
         return f"ERROR: No IPv4 addresses found for {domain}."
 
-    # Block each IP one at a time. Pass direction through so the caller can
-    # pick Inbound / Outbound / Both. Outbound is the default for websites
-    # because that's what stops YOU reaching the server.
+    # Block each IP one at a time. 
     results_out, ok, fail = [], 0, 0
     for ip in ips:
         r = block_ip(ip, direction)
@@ -208,7 +197,6 @@ def remove_ip_block(ip_address: str) -> str:
         return msg
 
     # The star (*) at the end means "delete any rule starting with this name".
-    # So this removes the full-IP block and any port-specific blocks for that IP.
     rule_prefix = f"MCP_Block_{ip_address}"
     command = [
         "powershell", "-NoProfile", "-Command",
@@ -238,7 +226,6 @@ def remove_all_blocks(confirmation: str) -> str:
         return "ERROR: Admin privileges required. Run as Administrator."
 
     # The 'MCP_Block_*' pattern only matches rules our tool made.
-    # Rules made by other programs are safe.
     command = [
         "powershell", "-NoProfile", "-Command",
         "Remove-NetFirewallRule -DisplayName 'MCP_Block_*' -ErrorAction SilentlyContinue"

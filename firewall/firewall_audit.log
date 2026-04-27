@@ -491,3 +491,85 @@
 2026-04-22 21:27:57,761 - INFO - Processing request of type ListToolsRequest
 2026-04-22 21:27:59,013 - INFO - Processing request of type ListToolsRequest
 2026-04-22 21:28:00,042 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:31:14,100 - INFO - Processing request of type ListToolsRequest
+2026-04-22 21:31:14,104 - INFO - Processing request of type ListPromptsRequest
+2026-04-22 21:31:14,104 - INFO - Processing request of type ListResourcesRequest
+2026-04-22 21:32:11,613 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:13,157 - INFO - Action: UNBLOCK_IP | IP: 104.20.23.154 | Success: True | User: system
+2026-04-22 21:32:15,489 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:16,952 - INFO - Action: UNBLOCK_IP | IP: 172.66.147.243 | Success: True | User: system
+2026-04-22 21:32:18,846 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:20,337 - INFO - Action: UNBLOCK_IP | IP: 2606:4700:10::6814:179a | Success: True | User: system
+2026-04-22 21:32:22,273 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:23,783 - INFO - Action: UNBLOCK_IP | IP: 2606:4700:10::ac42:93f3 | Success: True | User: system
+2026-04-22 21:32:26,026 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:27,483 - INFO - Action: UNBLOCK_IP | IP: 108.156.107.39 | Success: True | User: system
+2026-04-22 21:32:29,534 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:31,010 - INFO - Action: UNBLOCK_IP | IP: 108.156.107.110 | Success: True | User: system
+2026-04-22 21:32:33,322 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:34,725 - INFO - Action: UNBLOCK_IP | IP: 108.156.107.115 | Success: True | User: system
+2026-04-22 21:32:37,378 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:32:38,807 - INFO - Action: UNBLOCK_IP | IP: 108.156.107.129 | Success: True | User: system
+2026-04-22 21:32:46,628 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:33:42,775 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:33:45,161 - INFO - Action: BLOCK_IP | IP: 3.162.20.126 (Outbound) | Success: True | User: system
+2026-04-22 21:33:47,339 - INFO - Action: BLOCK_IP | IP: 3.162.20.24 (Outbound) | Success: True | User: system
+2026-04-22 21:33:49,519 - INFO - Action: BLOCK_IP | IP: 3.162.20.41 (Outbound) | Success: True | User: system
+2026-04-22 21:33:51,738 - INFO - Action: BLOCK_IP | IP: 3.162.20.74 (Outbound) | Success: True | User: system
+2026-04-22 21:33:51,738 - INFO - Action: BLOCK_WEB_IPS | IP: miniclip.com (4 IPs) | Success: True | User: system
+2026-04-22 21:33:54,159 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:33:55,599 - INFO - Action: BLOCK_IP | IP: 3.162.20.126 (Outbound) | Success: True | User: system
+2026-04-22 21:33:56,958 - INFO - Action: BLOCK_IP | IP: 3.162.20.24 (Outbound) | Success: True | User: system
+2026-04-22 21:33:58,384 - INFO - Action: BLOCK_IP | IP: 3.162.20.41 (Outbound) | Success: True | User: system
+2026-04-22 21:33:59,760 - INFO - Action: BLOCK_IP | IP: 3.162.20.74 (Outbound) | Success: True | User: system
+2026-04-22 21:33:59,760 - INFO - Action: BLOCK_WEB_IPS | IP: www.miniclip.com (4 IPs) | Success: True | User: system
+2026-04-22 21:34:36,220 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:34:37,606 - INFO - Action: UNBLOCK_IP | IP: 3.162.20.24 | Success: True | User: system
+2026-04-22 21:34:40,220 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:34:41,678 - INFO - Action: UNBLOCK_IP | IP: 3.162.20.41 | Success: True | User: system
+2026-04-22 21:34:44,500 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:34:45,920 - INFO - Action: UNBLOCK_IP | IP: 3.162.20.74 | Success: True | User: system
+2026-04-22 21:34:47,898 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:34:49,332 - INFO - Action: UNBLOCK_IP | IP: 3.162.20.126 | Success: True | User: system
+2026-04-22 21:34:51,433 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:39:20,283 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:39:22,863 - INFO - Action: BLOCK_IP | IP: 3.174.193.100 (Outbound) | Success: True | User: system
+2026-04-22 21:39:25,264 - INFO - Action: BLOCK_IP | IP: 3.174.193.23 (Outbound) | Success: True | User: system
+2026-04-22 21:39:27,617 - INFO - Action: BLOCK_IP | IP: 3.174.193.90 (Outbound) | Success: True | User: system
+2026-04-22 21:39:30,019 - INFO - Action: BLOCK_IP | IP: 3.174.193.99 (Outbound) | Success: True | User: system
+2026-04-22 21:39:30,019 - INFO - Action: BLOCK_WEB_IPS | IP: www.aston.ac.uk (4 IPs) | Success: True | User: system
+2026-04-22 21:57:06,666 - INFO - Processing request of type CallToolRequest
+2026-04-22 21:57:06,667 - INFO - Action: BLOCK_IP | IP: 192.0.12122.4556.7 | Success: False | User: system
+2026-04-22 22:10:39,217 - INFO - Processing request of type CallToolRequest
+2026-04-22 22:11:30,448 - INFO - Processing request of type CallToolRequest
+2026-04-22 22:11:33,068 - INFO - Action: BLOCK_IP | IP: 192.0.2.1 (Inbound) | Success: True | User: system
+2026-04-22 22:11:54,666 - INFO - Processing request of type CallToolRequest
+2026-04-22 22:12:02,701 - INFO - Processing request of type CallToolRequest
+2026-04-22 22:12:06,370 - INFO - Processing request of type CallToolRequest
+2026-04-22 22:12:22,157 - INFO - Processing request of type CallToolRequest
+2026-04-22 22:15:08,625 - INFO - Processing request of type CallToolRequest
+2026-04-23 16:00:48,638 - INFO - HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+2026-04-23 16:00:48,865 - INFO - Processing request of type ListToolsRequest
+2026-04-23 16:00:48,868 - INFO - Processing request of type ListPromptsRequest
+2026-04-23 16:00:48,869 - INFO - Processing request of type ListResourcesRequest
+2026-04-24 00:33:24,399 - INFO - Processing request of type ListToolsRequest
+2026-04-24 15:20:59,536 - INFO - HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+2026-04-24 15:20:59,544 - INFO - HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+2026-04-24 15:20:59,572 - INFO - Processing request of type ListToolsRequest
+2026-04-24 15:20:59,575 - INFO - Processing request of type ListPromptsRequest
+2026-04-24 15:20:59,576 - INFO - Processing request of type ListResourcesRequest
+2026-04-24 16:04:18,623 - INFO - Processing request of type ListToolsRequest
+2026-04-25 19:33:06,151 - INFO - HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+2026-04-25 19:33:06,341 - INFO - Processing request of type ListToolsRequest
+2026-04-25 19:33:06,386 - INFO - Processing request of type ListToolsRequest
+2026-04-25 19:33:06,388 - INFO - Processing request of type ListPromptsRequest
+2026-04-25 19:33:06,390 - INFO - Processing request of type ListResourcesRequest
+2026-04-26 20:46:52,818 - INFO - HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+2026-04-26 20:46:53,541 - INFO - Processing request of type ListToolsRequest
+2026-04-26 20:46:53,545 - INFO - Processing request of type ListPromptsRequest
+2026-04-26 20:46:53,546 - INFO - Processing request of type ListResourcesRequest
+2026-04-26 22:18:29,403 - INFO - Processing request of type ListToolsRequest
+2026-04-27 16:00:05,858 - INFO - HTTP Request: GET https://pypi.org/pypi/fastmcp/json "HTTP/1.1 200 OK"
+2026-04-27 16:00:05,896 - INFO - Processing request of type ListToolsRequest
+2026-04-27 16:00:05,898 - INFO - Processing request of type ListPromptsRequest
+2026-04-27 16:00:05,899 - INFO - Processing request of type ListResourcesRequest
