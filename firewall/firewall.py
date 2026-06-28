@@ -59,7 +59,7 @@ def block_website_ips(domain: str, direction: str = "Outbound") -> str:
 
 @mcp.tool()
 def remove_all_blocks(confirmation: str) -> str:
-    """Remove ALL MCP firewall rules. Requires confirmation='CONFIRM_DELETE_ALL'"""
+    """Remove ALL MCP firewall rules. Requires confirmation='CONFIRM_REMOVE_ALL'"""
     return remove_all_blocks_logic(confirmation)
 
 # Monitoring Tools
